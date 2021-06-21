@@ -1,8 +1,7 @@
 语音识别
 $roscore
 $rosrun robot_voice iat_publish
-$rostopic echo /voiceWords
-$rostopic pub /voiceWakeup std_msgs/String "data: 'any thing'"
+
 
 语言合成
 $roscore
