@@ -113,7 +113,14 @@ void WakeUp(const std_msgs::String::ConstPtr& msg)
     usleep(700*1000);
     wakeupFlag=1;
 }
- 
+
+void Wake()
+{
+    printf("waking up\r\n");
+    usleep(700*1000);
+    wakeupFlag=1;
+}
+
 int main(int argc, char* argv[])
 {
     // 初始化ROS
@@ -166,7 +173,8 @@ int main(int argc, char* argv[])
             msg.data = g_result;
             voiceWordsPub.publish(msg);
         }
- 
+        
+        Wake();
         ros::spinOnce();
         loop_rate.sleep();
         count++;
