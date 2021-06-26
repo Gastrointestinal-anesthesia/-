@@ -23,8 +23,53 @@ void callback(const std_msgs::String::ConstPtr& msg)
 {
     string str1 = msg->data.c_str();
     string str2 = "打开界面。";
+    bool iscommand = false;
+    int len = str1.size();
+    int i = 0;
+    
+    //'打'
+    for(i=0;i<len-2;++i){
+      if(str1[i]==str2[0]&&str1[i+1]==str2[1]&&str1[i+2]==str2[2]){
+        iscommand = true;
+        break;
+        }
+    }
+    
+    //‘开’
+    if(iscommand){
+    iscommand = false;
+    for(;i<len-2;++i){
+      if(str1[i]==str2[6]&&str1[i+1]==str2[7]&&str1[i+2]==str2[8]){
+        iscommand = true;
+        break;
+        }
+      }
+    }
+    
+    //'界'
+    if(iscommand){
+    iscommand = false;
+    for(;i<len-2;++i){
+      if(str1[i]==str2[9]&&str1[i+1]==str2[10]&&str1[i+2]==str2[11]){
+        iscommand = true;
+        break;
+        }
+      }
+    }
+    
+    //‘面’
+    if(iscommand){
+    iscommand = false;
+    for(;i<len-2;++i){
+      if(str1[i]==str2[12]&&str1[i+1]==str2[13]&&str1[i+2]==str2[14]){
+        iscommand = true;
+        break;
+        }
+      }
+    }
 
-    if(str1 == str2)
+
+    if(iscommand)
     {
         inFile.open("//home//lab129//test_ws//src", ios::in);
         cout << "ok" << endl;
