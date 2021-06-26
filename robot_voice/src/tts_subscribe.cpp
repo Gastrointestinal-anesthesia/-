@@ -1,9 +1,3 @@
-/*
-* 语音合成（Text To Speech，TTS）技术能够自动将任意文字实时转换为连续的
-* 自然语音，是一种能够在任何时间、任何地点，向任何人提供语音信息服务的
-* 高效便捷手段，非常符合信息时代海量数据、动态更新和个性化查询的需求。
-*/
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -196,11 +190,7 @@ playWav();
 }
 int main(int argc, char* argv[])
 {
-const char* start = "科大讯飞在线语音合成模块启动成功";
-makeTextToWav(start,fileName);
-playWav();
-
-    ros::init(argc,argv,"xf_tts_node");
+     ros::init(argc,argv,"xf_tts_node");
         ros::NodeHandle nd;
         ros::Subscriber sub = nd.subscribe("/voice/xf_tts_topic",3,topicCallBack);
         ros::spin();

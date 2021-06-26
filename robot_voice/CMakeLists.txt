@@ -160,6 +160,17 @@ target_link_libraries(iat_publish ${catkin_LIBRARIES} libmsc.so -ldl -lpthread -
 add_executable(tts_subscribe src/tts_subscribe.cpp)
 target_link_libraries(tts_subscribe ${catkin_LIBRARIES} libmsc.so -ldl -pthread)
 
+add_executable(sub_word src/sub_word.cpp src/speech_recognizer.c src/linuxrec.c)
+target_link_libraries(sub_word ${catkin_LIBRARIES} libmsc.so -ldl -lpthread -lm -lrt -lasound)
+
+cmake_minimum_required(VERSION 2.8.3)
+project(robot_voice)
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  rospy
+  std_msgs
+)
+catkin_package()
 #############
 ## Install ##
 #############

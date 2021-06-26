@@ -16,6 +16,8 @@
  
 int wakeupFlag   = 0 ;
 int resultFlag   = 0 ;
+
+int login_flag = 0;
  
 static void show_result(char *string, char is_over)
 {
@@ -91,7 +93,7 @@ static void demo_mic(const char* session_begin_params)
         printf("start listen failed %d\n", errcode);
     }
     /* demo 10 seconds recording */
-    while(i++ < 10)
+    while(i++ < 3)
         sleep(1);
     errcode = sr_stop_listening(&iat);
     if (errcode) {
@@ -120,7 +122,6 @@ void Wake()
     usleep(700*1000);
     wakeupFlag=1;
 }
-
 int main(int argc, char* argv[])
 {
     // 初始化ROS
@@ -135,35 +136,40 @@ int main(int argc, char* argv[])
     ros::Publisher voiceWordsPub = n.advertise<std_msgs::String>("voiceWords", 1000);  
  
     ROS_INFO("Sleeping...");
-    int count=0;
+
     while(ros::ok())
     {
         // 语音识别唤醒
         if (wakeupFlag){
             ROS_INFO("Wakeup...");
             int ret = MSP_SUCCESS;
-            const char* login_params = "appid = 62005a19, work_dir = .";
- 
-            const char* session_begin_params =
-                "sub = iat, domain = iat, language = zh_cn, "
-                "accent = mandarin, sample_rate = 16000, "
-                "result_type = plain, result_encoding = utf8";
- 
-            ret = MSPLogin(NULL, NULL, login_params);
-            if(MSP_SUCCESS != ret){
-                MSPLogout();
-                printf("MSPLogin failed , Error code %d.\n",ret);
+            if(login_flag == 0) {
+                const char *login_params = "appid = 62005a19, work_dir = .";
+
+
+
+
+                ret = MSPLogin(NULL, NULL, login_params);
+                if (MSP_SUCCESS != ret) {
+                    MSPLogout();
+                    printf("MSPLogin failed , Error code %d.\n", ret);
+                } else { login_flag = 1; }
+
             }
- 
+            const char *session_begin_params =
+                    "sub = iat, domain = iat, language = zh_cn, "
+                    "accent = mandarin, sample_rate = 16000, "
+                    "result_type = plain, result_encoding = utf8";
+
             printf("Demo recognizing the speech from microphone\n");
-            printf("Speak in 10 seconds\n");
+            printf("Speak in 3 seconds\n");
  
             demo_mic(session_begin_params);
  
-            printf("10 sec passed\n");
+            printf("3 sec passed\n");
         
             wakeupFlag=0;
-            MSPLogout();
+            //MSPLogout();
         }
  
         // 语音识别完成
@@ -177,7 +183,7 @@ int main(int argc, char* argv[])
         Wake();
         ros::spinOnce();
         loop_rate.sleep();
-        count++;
+
     }
  
 exit:
